@@ -188,3 +188,46 @@ Asegúrate de reemplazar /ruta/a/tu/directorio/dags con la ruta local al directo
 6.	Activa el DAG y verifica que se ejecuta correctamente dentro
 
 
+#Importar el módulo smtplib para el envío de correos electrónicos. Asegúrate de tener configurados los detalles de tu servidor SMTP, como el servidor, el puerto, el usuario y la contraseña.
+import smtplib
+
+
+Importar el módulo smtplib para el envío de correos electrónicos. Asegúrate de tener configurados los detalles de tu servidor SMTP, como el servidor, el puerto, el usuario y la contraseña.
+
+Define una función para enviar alertas por correo electrónico. Esta función recibirá el asunto y el cuerpo del mensaje como parámetros y utilizará el módulo smtplib para enviar el correo electrónico. Asegúrate de modificar los detalles del servidor SMTP en la función enviar_alerta_smtp según tus configuraciones.
+
+def enviar_alerta_smtp(asunto, cuerpo):
+    servidor_smtp = "tu_servidor_smtp"
+    puerto_smtp = tu_puerto_smtp
+    usuario_smtp = "tu_usuario_smtp"
+    contraseña_smtp = "tu_contraseña_smtp"
+    destinatario = "correo_destinatario"
+
+    mensaje = f"Subject: {asunto}\n\n{cuerpo}"
+    try:
+        with smtplib.SMTP(servidor_smtp, puerto_smtp) as servidor:
+            servidor.starttls()
+            servidor.login(usuario_smtp, contraseña_smtp)
+            servidor.sendmail(usuario_smtp, destinatario, mensaje)
+        print("Alerta enviada correctamente por correo electrónico.")
+    except Exception as e:
+        print("Error al enviar la alerta por correo electrónico:", str(e))
+
+
+Agrega la lógica para verificar los thresholds y enviar alertas cuando se superen. Puedes agregar esta lógica después de obtener los datos y antes de insertarlos en la tabla de Redshift. Aquí hay un ejemplo básico que compara el valor de la columna1 con un threshold predefinido y envía una alerta si se supera:
+
+# Threshold para la columna1
+threshold_columna1 = 100
+
+# Insertar datos en la tabla de Redshift
+for record in data:
+    columna1 = record['columna1']
+    if columna1 > threshold_columna1:
+        asunto = "Alerta: Valor de columna1 supera el threshold"
+        cuerpo = f"El valor de columna1 es {columna1}, que supera el threshold de {threshold_columna1}."
+        enviar_alerta_smtp(asunto, cuerpo)
+
+    cur.execute("""
+
+
+
